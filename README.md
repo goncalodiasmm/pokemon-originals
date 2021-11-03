@@ -1,38 +1,89 @@
-# create-svelte
+# Pokemon Originals
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
+## Table of contents
 
-## Creating a project
+- [Overview](#overview)
+  - [Description](#description)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
+- [Author](#author)
+- [Acknowledgments](#acknowledgments)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Overview
 
-```bash
-# create a new project in the current directory
-npm init svelte@next
+### Description
 
-# create a new project in my-app
-npm init svelte@next my-app
+Pokemon Originals is a database of pokemon nostalgia! It contains all the 151 original Pokemon, letting the user filter, search, and read the details of each Pokemon.
+It's based on the [SvelteKit Crash Course Tutorial](https://www.youtube.com/watch?v=UU7MgYIbtAk) from James Q. Quick.
+
+### Screenshot
+
+![](./screenshot.png)
+
+### Links
+
+- [Live Site](https://pokemon-originals.vercel.app/)
+
+## My process
+
+### Built with
+
+- [SvelteKit](https://kit.svelte.dev/) - Svelte framework
+- [TailwindCSS](https://tailwindcss.com/) - For styling
+- [PokeAPI](https://pokeapi.co/) - API for Pokemon info and stats
+
+### What I learned
+
+This was a great project to get my feet wet with Svelte. Compared to React, I learned that Svelte is a more lightweight framework, close to vanilla Javascript. The syntax, albeit different, is conceptually similar to React. I also felt very comfortable on the development environment.
+
+I learned how to build Svelte components, and how to filter the Pokemon in the UI, dynamically updating it.
+
+```svelte
+import PokeCard from '../components/PokeCard.svelte';
+	export let pokemon;
+	let searchTerm = '';
+	let filteredPokemon = [];
+
+	$: {
+		if (searchTerm) {
+			filteredPokemon = pokemon.filter((poke) =>
+				poke.name.toLowerCase().includes(searchTerm.toLowerCase())
+			);
+		} else {
+			filteredPokemon = [...pokemon];
+		}
+	}
 ```
 
-> Note: the `@next` is temporary
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```svelte
+<input
+	type="text"
+	class="w-full border-2 py-2 px-4 rounded"
+	placeholder="Search Pokémon"
+	bind:value={searchTerm}
+/>
+<div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+	{#each filteredPokemon as poke}
+		<PokeCard {poke} />
+	{/each}
+</div>
 ```
 
-## Building
+This was also a great opportunity to improve my ability to work with API's, as I fetched all the Pokemon data from PokeAPI. I also managed to incorporate dynamic images for each Pokemon, from [Serebii.net](https://www.serebii.net/)
 
-Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
+### Continued development
 
-```bash
-npm run build
-```
+I did not manage to complete the Pokemon details page. Although I managed to fetch the correct data from the API, I struggled to build the UI from it. In the future I plan to complete this part of the project.
 
-> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+## Author
+
+- Github - [Gonçalo Dias](https://github.com/goncalodiasmm)
+- Twitter - [@goncalodiasmm](https://twitter.com/goncalodiasmm)
+
+## Acknowledgments
+
+The [SvelteKit Crash Course Tutorial](https://www.youtube.com/watch?v=UU7MgYIbtAk) from James Q. Quick helped me immensely to understand the Svelte development paradigm, and broaden my knowledge on Javascript frameworks.
